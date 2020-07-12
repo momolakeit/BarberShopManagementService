@@ -31,9 +31,9 @@ public class JwtUtil {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
 
     }
-    public String generateToken(UserDetails userDetails){
-        Map<String,Object> claims= new HashMap<>();
-        claims.put("scope","BUSINESS");
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("authority",userDetails.getAuthorities().stream().findFirst().get().getAuthority());
         return createToken(claims,userDetails.getUsername());
 
     }

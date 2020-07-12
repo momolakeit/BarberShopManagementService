@@ -8,6 +8,7 @@ import com.momoProjet.BarberShopManagementService.entities.Utilisateur;
 import com.momoProjet.BarberShopManagementService.repositories.UtilisteurBaseRepository;
 import com.momoProjet.BarberShopManagementService.service.converter.UtilisateurToDTOGenericConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -73,6 +74,7 @@ public class UtilisateurService {
             business.getEmployees().add(employee);
         }
     }
+    
     public void addEmployee(List<UtilisateurDTO> bossAndEmployee){//test avec integration
         UtilisateurDTO boss= bossAndEmployee.stream().filter(x -> x.getRole().toUpperCase().
                                                                   contentEquals(BUSINESS_ROLE)).findFirst().get();

@@ -195,7 +195,7 @@ public class UtilisateurControllerTest {
 
         ResponseEntity<String> responseAddEmployee= this.restTemplate.exchange("http://localhost:" +
                         port +
-                        "/generateToken", HttpMethod.POST,
+                        "/addEmployee", HttpMethod.POST,
                 request,
                 new ParameterizedTypeReference<String>() {
                 });

@@ -1,6 +1,7 @@
 package com.momoProjet.BarberShopManagementService.util;
 
 import com.momoProjet.BarberShopManagementService.security.service.MyUserDetailsService;
+import com.momoProjet.BarberShopManagementService.security.service.authorities.CustomAuthority;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -25,6 +28,7 @@ class JwtUtilTest {
     @Test
     public void generateTokenTestRecupererUserName(){
         UserDetails userDetails=createUserDetails();
+
         String token=jwtUtil.generateToken(userDetails);
         Claims claims= Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
         claims.getSubject();
@@ -52,7 +56,9 @@ class JwtUtilTest {
         return new UserDetails() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
-                return null;
+                List<CustomAuthority> customAuthorities=new ArrayList<>();
+                customAuthorities.add(new CustomAuthority("BUSINESS".toUpperCase()));
+                return customAuthorities;
             }
 
             @Override

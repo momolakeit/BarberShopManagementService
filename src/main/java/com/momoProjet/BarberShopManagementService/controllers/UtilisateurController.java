@@ -78,11 +78,8 @@ public class UtilisateurController {
         final String jwt =jwtUtil.generateToken(userDetails);
         return ResponseEntity.ok(jwt);
     }
-    @RequestMapping(path ="/iii",method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<?> iii()throws Exception{
-        return ResponseEntity.ok("dsakjdkasjdkas");
-    }
+
+
     @RequestMapping(path ="/createUser",method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> createUser(@RequestBody UserCreateDTO user)throws Exception{
