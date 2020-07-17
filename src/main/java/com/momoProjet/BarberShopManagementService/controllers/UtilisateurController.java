@@ -32,8 +32,7 @@ public class UtilisateurController {
     private final String BUSINESS_ROLE= "BUSINESS";
     private final String CLIENT_ROLE= "CLIENT";
     private final String EMPLOYEE_ROLE= "EMPLOYEE";
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
 
     @Qualifier("myUserDetailsService")
     @Autowired
@@ -48,36 +47,8 @@ public class UtilisateurController {
 
 
 
-    @RequestMapping(path ="/authenticate",method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest authenticationRequest)throws Exception{
-        try {
-                 authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 
-        }catch (BadCredentialsException  e ){
-            throw  new Exception("incorrect username and password",e);
-        }
-
-        final UserDetails userDetails= userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        final String jwt =jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(jwt);
-    }
-    @RequestMapping(path ="/generateToken",method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<?> generateToken(@RequestBody AuthenticationRequest authenticationRequest)throws Exception{
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-
-        }catch (BadCredentialsException  e ){
-            throw  new Exception("incorrect username and password",e);
-        }
-
-        final UserDetails userDetails= userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        final String jwt =jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(jwt);
-    }
+    
 
 
     @RequestMapping(path ="/createUser",method = RequestMethod.POST)
@@ -98,9 +69,6 @@ public class UtilisateurController {
 
         }
         UtilisateurDTO createdUtilisateur=utilisateurService.createUser(utilisateur);
-        final UserDetails userDetails= userDetailsService.loadUserByUsername(createdUtilisateur.getEmail());
-        final String jwt =jwtUtil.generateToken(userDetails);
-        createdUtilisateur.setJwt(jwt);
        return ResponseEntity.ok(createdUtilisateur);
 
     }

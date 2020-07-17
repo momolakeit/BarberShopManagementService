@@ -22,38 +22,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
-    @Autowired
-    MyUserDetailsService myUserDetailsService;
-
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
 
 
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.userDetailsService(myUserDetailsService);
-
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception{
-        return super.authenticationManagerBean();
-    }
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/authenticate","/createUser","/h2-console/**").permitAll().
-                and().authorizeRequests().anyRequest().authenticated();
-        http.headers().frameOptions().disable();
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .antMatchers( "/createUser", "/h2-console/**").permitAll().
+                and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
+        http.headers().frameOptions().disable();
     }
 }

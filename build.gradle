@@ -30,8 +30,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	//implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	compile group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: '5.3.3.RELEASE'
+	compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.3.1.RELEASE'
+	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.5.0.RELEASE'
 	compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+	implementation 'org.springframework.cloud:spring-cloud-starter-oauth2'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'de.codecentric:spring-boot-admin-starter-client'
@@ -44,6 +47,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 	compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.4.0-b180830.0359'
+	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'
 
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
