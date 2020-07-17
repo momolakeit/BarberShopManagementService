@@ -13,17 +13,20 @@ import com.momoProjet.BarberShopManagementService.models.AuthenticationResponse;
 import com.momoProjet.BarberShopManagementService.service.UtilisateurService;
 import com.momoProjet.BarberShopManagementService.util.JwtUtil;
 import com.momoProjet.BarberShopManagementService.util.springUtil.CustomUser;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -39,15 +42,7 @@ public class UtilisateurController {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
     private UtilisateurService utilisateurService;
-
-
-
-
-
     
 
 
@@ -69,6 +64,8 @@ public class UtilisateurController {
 
         }
         UtilisateurDTO createdUtilisateur=utilisateurService.createUser(utilisateur);
+       createdUtilisateur.setJwt(utilisateurService.returnAuthorizationServerToken(utilisateur.getEmail(),
+                                                                                    utilisateur.getPassword()));
        return ResponseEntity.ok(createdUtilisateur);
 
     }

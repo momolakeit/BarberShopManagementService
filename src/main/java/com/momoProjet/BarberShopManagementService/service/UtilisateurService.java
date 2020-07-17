@@ -7,11 +7,15 @@ import com.momoProjet.BarberShopManagementService.entities.Employee;
 import com.momoProjet.BarberShopManagementService.entities.Utilisateur;
 import com.momoProjet.BarberShopManagementService.repositories.UtilisteurBaseRepository;
 import com.momoProjet.BarberShopManagementService.service.converter.UtilisateurToDTOGenericConverter;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -88,6 +92,30 @@ public class UtilisateurService {
             utilisteurBaseRepository.save(nouvelEngage);
         }
 
+    }
+    public String returnAuthorizationServerToken(String username,String password){
+        ResponseEntity<String> response = null;
+        RestTemplate restTemplate = new RestTemplate();
+
+        // According OAuth documentation we need to send the client id and secret key in the header for authentication
+        String credentials = "fekoumbrek:fekoumbrek@123";
+        String encodedCredentials = new String(Base64.encodeBase64(credentials.getBytes()));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers.add("Authorization", "Basic " + encodedCredentials);
+
+        HttpEntity<String> request = new HttpEntity<String>(headers);
+
+        String access_token_url = "http://localhost:8080/oauth/token";
+        access_token_url += "?username=" + username ;
+        access_token_url += "&password=" + password ;
+        access_token_url += "&grant_type=password";
+
+
+        response = restTemplate.exchange(access_token_url, HttpMethod.POST, request, String.class);
+
+        return response.getBody();
     }
 }
 
