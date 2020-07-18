@@ -49,7 +49,7 @@ public class UtilisateurControllerTest {
     @Test
     public void createUserBusinessShouldReturnUser() throws URISyntaxException {
         URI uri = new URI("https://www.google.com/");
-        ResponseEntity <String> responseEntity= ResponseEntity.created(uri).header("MyResponseHeader", "MyValue").body("Hello World");
+        ResponseEntity <String> responseEntity= ResponseEntity.created(uri).header("MyResponseHeader", "MyValue").body("{access_token: helloworld}");
         when( restTemplate.exchange(ArgumentMatchers.anyString(),any(HttpMethod.class), any(HttpEntity.class), Mockito.eq(String.class))).thenReturn(responseEntity);
 
         UserCreateDTO  userCreateDTO =new UserCreateDTO();
@@ -67,7 +67,7 @@ public class UtilisateurControllerTest {
     @Test
     public void createUserClientShouldReturnUser() throws URISyntaxException {
         URI uri = new URI("https://www.google.com/");
-        ResponseEntity <String> responseEntity= ResponseEntity.created(uri).header("MyResponseHeader", "MyValue").body("Hello World");
+        ResponseEntity <String> responseEntity= ResponseEntity.created(uri).header("MyResponseHeader", "MyValue").body("{access_token: helloworld}");
         when( restTemplate.exchange(ArgumentMatchers.anyString(),any(HttpMethod.class), any(HttpEntity.class), Mockito.eq(String.class))).thenReturn(responseEntity);
         UserCreateDTO  userCreateDTO =new UserCreateDTO();
         userCreateDTO.setEmail("testUserCreateClient@gmail.com");
@@ -85,7 +85,7 @@ public class UtilisateurControllerTest {
     @Test
     public void createUserEmployeShouldReturnUser() throws URISyntaxException {
         URI uri = new URI("https://www.google.com/");
-        ResponseEntity <String> responseEntity= ResponseEntity.created(uri).header("MyResponseHeader", "MyValue").body("Hello World");
+        ResponseEntity <String> responseEntity= ResponseEntity.created(uri).header("MyResponseHeader", "MyValue").body("{access_token: helloworld}");
         when( restTemplate.exchange(ArgumentMatchers.anyString(),any(HttpMethod.class), any(HttpEntity.class), Mockito.eq(String.class))).thenReturn(responseEntity);
         UserCreateDTO  userCreateDTO =new UserCreateDTO();
         userCreateDTO.setEmail("testUserCreateEmploye@gmail.com");

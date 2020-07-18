@@ -1,33 +1,18 @@
 package com.momoProjet.BarberShopManagementService.controllers;
 
-
 import com.momoProjet.BarberShopManagementService.DTO.UserCreateDTO;
 import com.momoProjet.BarberShopManagementService.DTO.UtilisateurDTO;
 import com.momoProjet.BarberShopManagementService.entities.Business;
 import com.momoProjet.BarberShopManagementService.entities.Client;
 import com.momoProjet.BarberShopManagementService.entities.Employee;
 import com.momoProjet.BarberShopManagementService.entities.Utilisateur;
-
-import com.momoProjet.BarberShopManagementService.models.AuthenticationRequest;
-import com.momoProjet.BarberShopManagementService.models.AuthenticationResponse;
 import com.momoProjet.BarberShopManagementService.service.UtilisateurService;
-import com.momoProjet.BarberShopManagementService.util.JwtUtil;
-import com.momoProjet.BarberShopManagementService.util.springUtil.CustomUser;
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.*;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
-import java.security.Principal;
-import java.util.Arrays;
 import java.util.List;
+
 
 
 @RestController
@@ -36,10 +21,6 @@ public class UtilisateurController {
     private final String CLIENT_ROLE= "CLIENT";
     private final String EMPLOYEE_ROLE= "EMPLOYEE";
 
-
-    @Qualifier("myUserDetailsService")
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     private UtilisateurService utilisateurService;

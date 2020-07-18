@@ -40,7 +40,7 @@ class UtilisateurServiceTest {
 
     @Test
     public void createUserNewUserReturnUtilisateurBusiness() throws InvocationTargetException, IllegalAccessException {
-        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter(),new RestTemplate());
+        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter());
         Business business=new Business();
         business.setEmail("email@gmail.com");
         business.setPassword("password");
@@ -52,7 +52,7 @@ class UtilisateurServiceTest {
     }
     @Test
     public void createUserNewUserReturnUtilisateurClient() throws InvocationTargetException, IllegalAccessException {
-        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter(),new RestTemplate());;
+        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter());;
         Client client=new Client();
         client.setEmail("email@gmail.com");
         client.setPassword("password");
@@ -66,7 +66,7 @@ class UtilisateurServiceTest {
 
     @Test
     public void createUserNewUserReturnUtilisateurEmploye() throws InvocationTargetException, IllegalAccessException {
-        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter(),new RestTemplate());;
+        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter());;
         Employee employee=new Employee();
         employee.setEmail("email@gmail.com");
         employee.setPassword("password");
@@ -79,7 +79,7 @@ class UtilisateurServiceTest {
     }
     @Test
     public void createUserExistingUserReturnUtilisateurBusiness() throws InvocationTargetException, IllegalAccessException {
-        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter(),new RestTemplate());;
+        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter());;
         Business business=new Business();
         business.setEmail("email@gmail.com");
         business.setPassword("password");
@@ -91,7 +91,7 @@ class UtilisateurServiceTest {
     }
     @Test
     public void createUserExistingUserReturnUtilisateurClient() throws InvocationTargetException, IllegalAccessException {
-        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter(),new RestTemplate());;
+        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter());;
         Client client=new Client();
         client.setEmail("email@gmail.com");
         client.setPassword("password");
@@ -103,7 +103,7 @@ class UtilisateurServiceTest {
     }
     @Test
     public void createUserExistingUserReturnUtilisateurEmployee() throws InvocationTargetException, IllegalAccessException {
-        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter(),new RestTemplate());;
+        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter());;
         Employee employee=new Employee();
         employee.setEmail("email@gmail.com");
         employee.setPassword("password");
@@ -115,7 +115,7 @@ class UtilisateurServiceTest {
     }
     @Test
     public void connectUserUserFoundMatchingCredentials(){
-        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter(),new RestTemplate());;
+        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter());;
         Business business=new Business();
         business.setEmail("email@gmail.com");
         business.setPassword("password");
@@ -128,7 +128,7 @@ class UtilisateurServiceTest {
     }
     @Test
     public void connectUserUserNotFoundReturnNull(){
-        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter(),new RestTemplate());;
+        utilisateurService= new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter());;
         Business business=new Business();
         business.setEmail("email@gmail.com");
         business.setPassword("password");
@@ -143,7 +143,7 @@ class UtilisateurServiceTest {
         UserCreateDTO userCreateDTO=new UserCreateDTO();
         userCreateDTO.setEmail("foo");
         userCreateDTO.setPassword("foo");
-        utilisateurService=new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter(),new RestTemplate());;
+        utilisateurService=new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter());;
         Utilisateur utilisateur= utilisateurService.createUtilsateurSubtype(new Business(),userCreateDTO);
         assertTrue(utilisateur instanceof Business);
         assertEquals(utilisateur.getPassword(),userCreateDTO.getPassword());
@@ -158,7 +158,7 @@ class UtilisateurServiceTest {
         List<Employee> employeesList=new ArrayList<>();
         employeesList.add(employee);
         business.setEmployees(employeesList);
-        utilisateurService=new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter(),new RestTemplate());;
+        utilisateurService=new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter());;
         List<Employee> assertListEmp=utilisateurService.returnAllEmployees(business);
         assertEquals(1, ( assertListEmp).size());
 
@@ -169,7 +169,7 @@ class UtilisateurServiceTest {
         business.setNom("buss");
         List<Employee> employeesList=new ArrayList<>();
         business.setEmployees(employeesList);
-        utilisateurService=new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter(),new RestTemplate());;
+        utilisateurService=new UtilisateurService(utilisteurBaseRepository,new UtilisateurToDTOGenericConverter());;
         List<Employee> assertListEmp=utilisateurService.returnAllEmployees(business);
         assertEquals(0,assertListEmp.size());
 

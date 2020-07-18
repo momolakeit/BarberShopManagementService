@@ -11,7 +11,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,11 +22,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+
 @Service
 public class UtilisateurService {
 
     private UtilisteurBaseRepository utilisteurBaseRepository;
     private UtilisateurToDTOGenericConverter utilisateurToDTOGenericConverter;
+    @Autowired
     private RestTemplate restTemplate;
 
     private final String BUSINESS_ROLE= "BUSINESS";
@@ -33,10 +37,9 @@ public class UtilisateurService {
 
     @Autowired
     public UtilisateurService(UtilisteurBaseRepository utilisteurBaseRepository,
-                              UtilisateurToDTOGenericConverter utilisateurToDTOGenericConverter,RestTemplate restTemplate) {
+                              UtilisateurToDTOGenericConverter utilisateurToDTOGenericConverter) {
         this.utilisteurBaseRepository = utilisteurBaseRepository;
         this.utilisateurToDTOGenericConverter=utilisateurToDTOGenericConverter;
-        this.restTemplate=restTemplate;
     }
 
     public  UtilisateurDTO createUser(Utilisateur  utilisateurGeneric) throws InvocationTargetException, IllegalAccessException {
@@ -117,8 +120,8 @@ public class UtilisateurService {
 
 
         response = restTemplate.exchange(access_token_url, HttpMethod.POST, request, String.class);
-
-        return response.getBody();
+        JSONObject jsonObject = new JSONObject(response.getBody());
+        return jsonObject.getString("access_token");
     }
     @Bean
     public RestTemplate restTemplate(){return  new RestTemplate();}
