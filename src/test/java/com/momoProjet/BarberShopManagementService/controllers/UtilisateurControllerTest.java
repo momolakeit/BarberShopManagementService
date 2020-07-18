@@ -6,62 +6,57 @@ import com.momoProjet.BarberShopManagementService.BarberShopManagementServiceApp
 import com.momoProjet.BarberShopManagementService.DTO.UserCreateDTO;
 import com.momoProjet.BarberShopManagementService.DTO.UtilisateurDTO;
 import com.momoProjet.BarberShopManagementService.entities.Business;
-import com.momoProjet.BarberShopManagementService.models.AuthenticationRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import static org.mockito.ArgumentMatchers.any;
+
+
+import static org.mockito.Mockito.when;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,classes = BarberShopManagementServiceApplication.class)
+@ActiveProfiles("test")
+@AutoConfigureMockMvc(addFilters = false)
 public class UtilisateurControllerTest {
     @LocalServerPort
     private int port;
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private TestRestTemplate testRestTemplate;
+    @MockBean
+    private RestTemplate restTemplate;
+
+
 
     @Test
-    public void authenticationShouldReturnJwt(){
-        AuthenticationRequest authenticationRequest=new AuthenticationRequest();
-        authenticationRequest.setPassword("foo");
-        authenticationRequest.setUsername("foo@gmail.com");
-        String authenticationResponse= this.restTemplate.postForEntity("http://localhost:" +
-                                                                                            port +
-                                                                                            "/authenticate",
-                                                                                            authenticationRequest,
-                                                                                 String.class).getBody();
-
-        assertNotNull(authenticationResponse);
-    }
-    @Test
-    public void connectUserShouldReturnUtilisateurSubtype(){
-        AuthenticationRequest authenticationRequest=new AuthenticationRequest();
-        authenticationRequest.setPassword("foo");
-        authenticationRequest.setUsername("foo@gmail.com");
-        String authenticationResponse= this.restTemplate.postForEntity("http://localhost:" +
-                        port +
-                        "/authenticate",
-                authenticationRequest,
-                String.class)
-                .getBody();
-
-        assertNotNull(authenticationResponse);
-    }
-    @Test
-    public void createUserBusinessShouldReturnUser(){
+    public void createUserBusinessShouldReturnUser() throws URISyntaxException {
+        URI uri = new URI("https://www.google.com/");
+        ResponseEntity <String> responseEntity= ResponseEntity.created(uri).header("MyResponseHeader", "MyValue").body("Hello World");
+        when( restTemplate.exchange(ArgumentMatchers.anyString(),any(HttpMethod.class), any(HttpEntity.class), Mockito.eq(String.class))).thenReturn(responseEntity);
 
         UserCreateDTO  userCreateDTO =new UserCreateDTO();
-        userCreateDTO.setEmail("business@gmail.com");
+        userCreateDTO.setEmail("testUserCreateBusiness@gmail.com");
         userCreateDTO.setPassword("password");
         userCreateDTO.setRole("BUSINESS");
-        UtilisateurDTO utilisateur= this.restTemplate.postForEntity("http://localhost:" +
+        UtilisateurDTO utilisateur= this.testRestTemplate.postForEntity("http://localhost:" +
                         port +
                         "/createUser",
                 userCreateDTO,
@@ -70,13 +65,15 @@ public class UtilisateurControllerTest {
         assertNotNull(utilisateur);
     }
     @Test
-    public void createUserClientShouldReturnUser(){
-
+    public void createUserClientShouldReturnUser() throws URISyntaxException {
+        URI uri = new URI("https://www.google.com/");
+        ResponseEntity <String> responseEntity= ResponseEntity.created(uri).header("MyResponseHeader", "MyValue").body("Hello World");
+        when( restTemplate.exchange(ArgumentMatchers.anyString(),any(HttpMethod.class), any(HttpEntity.class), Mockito.eq(String.class))).thenReturn(responseEntity);
         UserCreateDTO  userCreateDTO =new UserCreateDTO();
-        userCreateDTO.setEmail("client@gmail.com");
+        userCreateDTO.setEmail("testUserCreateClient@gmail.com");
         userCreateDTO.setPassword("password");
         userCreateDTO.setRole("CLIENT");
-            UtilisateurDTO utilisateur= this.restTemplate.postForEntity("http://localhost:" +
+            UtilisateurDTO utilisateur= this.testRestTemplate.postForEntity("http://localhost:" +
                         port +
                         "/createUser",
                 userCreateDTO,
@@ -84,14 +81,17 @@ public class UtilisateurControllerTest {
         assertTrue(utilisateur.getEmail().contentEquals(userCreateDTO.getEmail()));
         assertNotNull(utilisateur);
     }
-    @Test
-    public void createUserEmployeShouldReturnUser(){
 
+    @Test
+    public void createUserEmployeShouldReturnUser() throws URISyntaxException {
+        URI uri = new URI("https://www.google.com/");
+        ResponseEntity <String> responseEntity= ResponseEntity.created(uri).header("MyResponseHeader", "MyValue").body("Hello World");
+        when( restTemplate.exchange(ArgumentMatchers.anyString(),any(HttpMethod.class), any(HttpEntity.class), Mockito.eq(String.class))).thenReturn(responseEntity);
         UserCreateDTO  userCreateDTO =new UserCreateDTO();
-        userCreateDTO.setEmail("employee@gmail.com");
+        userCreateDTO.setEmail("testUserCreateEmploye@gmail.com");
         userCreateDTO.setPassword("password");
         userCreateDTO.setRole("EMPLOYEE");
-        UtilisateurDTO utilisateur= this.restTemplate.postForEntity("http://localhost:" +
+        UtilisateurDTO utilisateur= this.testRestTemplate.postForEntity("http://localhost:" +
                         port +
                         "/createUser",
                 userCreateDTO,
@@ -120,24 +120,10 @@ public class UtilisateurControllerTest {
         HttpEntity<String> request;
 
 
-        //authentification request
-        JSONObject authentication=new JSONObject();
-        authentication.put("username","businesstest@gmail.com");
-        authentication.put("password","business");
-        request=new HttpEntity<String>(authentication.toString(),httpHeaders);
 
-        //getToken
-       /* ResponseEntity<String> jwt= this.restTemplate.exchange("http://localhost:" +
-                        port +
-                        "/authenticate", HttpMethod.POST,
-                request,
-                new ParameterizedTypeReference<String>() {
-                });*/
-        String jwt="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJidXNpbmVzc3Rlc3RAZ21haWwuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sImF1dGhvcml0eSI6IkJVU0lORVNTIiwiZXhwIjoxNTk0OTM5OTkwLCJ1c2VyTmFtZSI6ImJ1c2luZXNzdGVzdEBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6WyJCVVNJTkVTUyJdLCJqdGkiOiI1YWRiZGUxNC02ZjU3LTRjZGItYjgxOC1jMGY2YjlhMTBiYzUiLCJjbGllbnRfaWQiOiJmZWtvdW1icmVrIn0.U8ZqyatVYx6mN7VUwXzYWeM3aiTOfrGHT6Dtcviy9PwTL5TGZ6uLFg-VtC7sk5dM_V3uMGV4OQYXGQGaDBan4g3Zn-9KvFxIMtM0HPAQTS9jeWWzGKJD_ttRAZi4DAZB0PWYVt_v6ji9ZWdXsrRyiX-TC2GmDkwJHqGLMzr3Joc";
-        httpHeaders.add("Authorization","bearer "+jwt);
         request=new HttpEntity<String>(jsonArray.toString(),httpHeaders);
 
-        ResponseEntity<String> responseAddEmployee= this.restTemplate.exchange("http://localhost:" +
+        ResponseEntity<String> responseAddEmployee= this.testRestTemplate.exchange("http://localhost:" +
                         port +
                         "/addEmployee", HttpMethod.POST,
                 request,
@@ -148,7 +134,7 @@ public class UtilisateurControllerTest {
         emailJSON.put("email","businesstest@gmail.com");
         emailJSON.put("password","business");
         request=new HttpEntity<String>(emailJSON.toString(),httpHeaders);
-        ResponseEntity<String> responseGetUser=this.restTemplate.exchange("http://localhost:" +
+        ResponseEntity<String> responseGetUser=this.testRestTemplate.exchange("http://localhost:" +
                         port +
                         "/getUser", HttpMethod.POST,
                 request,
@@ -157,7 +143,7 @@ public class UtilisateurControllerTest {
 
         Business business=new ObjectMapper().readValue(responseGetUser.getBody(),Business.class);
 
-        //assertEquals(jwt.getStatusCode(), HttpStatus.OK);
+
         assertEquals(responseAddEmployee.getStatusCode(), HttpStatus.OK);
         assertEquals(responseGetUser.getStatusCode(), HttpStatus.OK);
         assertTrue(business.getEmployees().get(0).getEmail().contentEquals(employee.get("email").toString()));
@@ -184,17 +170,9 @@ public class UtilisateurControllerTest {
         authentication.put("password","employee");
         request=new HttpEntity<String>(authentication.toString(),httpHeaders);
 
-        //getToken
-        ResponseEntity<String> jwt= this.restTemplate.exchange("http://localhost:" +
-                        port +
-                        "/authenticate", HttpMethod.POST,
-                request,
-                new ParameterizedTypeReference<String>() {
-                });
-        httpHeaders.add("Authorization","bearer "+jwt.getBody().toString());
         request=new HttpEntity<String>(jsonArray.toString(),httpHeaders);
 
-        ResponseEntity<String> responseAddEmployee= this.restTemplate.exchange("http://localhost:" +
+        ResponseEntity<String> responseAddEmployee= this.testRestTemplate.exchange("http://localhost:" +
                         port +
                         "/addEmployee", HttpMethod.POST,
                 request,
@@ -203,8 +181,8 @@ public class UtilisateurControllerTest {
 
 
 
-        assertEquals(jwt.getStatusCode(), HttpStatus.OK);
-        assertEquals(responseAddEmployee.getStatusCode(), HttpStatus.FORBIDDEN);
+
+        assertEquals(responseAddEmployee.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
 
 
 

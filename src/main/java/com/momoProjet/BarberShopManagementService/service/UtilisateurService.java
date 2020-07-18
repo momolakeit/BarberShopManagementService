@@ -9,6 +9,7 @@ import com.momoProjet.BarberShopManagementService.repositories.UtilisteurBaseRep
 import com.momoProjet.BarberShopManagementService.service.converter.UtilisateurToDTOGenericConverter;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -24,15 +25,18 @@ public class UtilisateurService {
 
     private UtilisteurBaseRepository utilisteurBaseRepository;
     private UtilisateurToDTOGenericConverter utilisateurToDTOGenericConverter;
+    private RestTemplate restTemplate;
 
     private final String BUSINESS_ROLE= "BUSINESS";
     private final String CLIENT_ROLE= "CLIENT";
     private final String EMPLOYEE_ROLE= "EMPLOYEE";
 
     @Autowired
-    public UtilisateurService(UtilisteurBaseRepository utilisteurBaseRepository,UtilisateurToDTOGenericConverter utilisateurToDTOGenericConverter) {
+    public UtilisateurService(UtilisteurBaseRepository utilisteurBaseRepository,
+                              UtilisateurToDTOGenericConverter utilisateurToDTOGenericConverter,RestTemplate restTemplate) {
         this.utilisteurBaseRepository = utilisteurBaseRepository;
         this.utilisateurToDTOGenericConverter=utilisateurToDTOGenericConverter;
+        this.restTemplate=restTemplate;
     }
 
     public  UtilisateurDTO createUser(Utilisateur  utilisateurGeneric) throws InvocationTargetException, IllegalAccessException {
@@ -95,7 +99,6 @@ public class UtilisateurService {
     }
     public String returnAuthorizationServerToken(String username,String password){
         ResponseEntity<String> response = null;
-        RestTemplate restTemplate = new RestTemplate();
 
         // According OAuth documentation we need to send the client id and secret key in the header for authentication
         String credentials = "fekoumbrek:fekoumbrek@123";
@@ -117,5 +120,7 @@ public class UtilisateurService {
 
         return response.getBody();
     }
+    @Bean
+    public RestTemplate restTemplate(){return  new RestTemplate();}
 }
 

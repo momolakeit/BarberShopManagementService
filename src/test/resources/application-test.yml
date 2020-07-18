@@ -1,0 +1,6 @@
+
+
+config:
+  securite:
+    active: false
+
